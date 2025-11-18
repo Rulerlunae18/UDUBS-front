@@ -6,9 +6,9 @@ import { backendUrl } from "./env"
 // ============================================================
 
 const api = axios.create({
-  baseURL: backendUrl('/api'),
-  withCredentials: true,
-})
+  baseURL: import.meta.env.VITE_API_URL || 'https://udubs-back.onrender.com/api',
+  withCredentials: true, // ⚠ вот это must-have
+});
 
 // 🔐 Автоматическая подстановка токена
 api.interceptors.request.use(config => {

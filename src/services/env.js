@@ -7,7 +7,7 @@ const currentHost = window.location.hostname;
 if (!import.meta.env.PROD) {
   backend = `http://${currentHost}:3000`;
 } else {
-  backend = "https://your-domain.com";
+  backend = "https://udubs-back.onrender.com";
 }
 
 export const backendUrl = (path = "") => backend + path;

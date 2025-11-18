@@ -10,13 +10,6 @@ const api = axios.create({
   withCredentials: true, // ⚠ вот это must-have
 });
 
-// 🔐 Автоматическая подстановка токена
-api.interceptors.request.use(config => {
-  const token = localStorage.getItem('token')
-  if (token) config.headers.Authorization = `Bearer ${token}`
-  return config
-})
-
 // 🧱 Унифицированная обработка ошибок
 api.interceptors.response.use(
   response => response,
@@ -24,8 +17,6 @@ api.interceptors.response.use(
     console.warn("⚠️ API Error:", error?.response?.data || error.message)
     // Если сессия истекла — удаляем токен и перезагружаем
     if (error.response?.status === 401) {
-      localStorage.removeItem('token')
-      localStorage.removeItem('user')
       window.location.href = '/login'
     }
     return Promise.reject(error)

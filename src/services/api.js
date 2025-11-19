@@ -17,7 +17,8 @@ api.interceptors.response.use(
     console.warn("⚠️ API Error:", error?.response?.data || error.message)
     // Если сессия истекла — удаляем токен и перезагружаем
     if (error.response?.status === 401) {
-      window.location.href = '/access'
+      console.warn("Unauthenticated — clearing user")
+      localStorage.removeItem('user')
     }
     return Promise.reject(error)
   }

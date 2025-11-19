@@ -1,17 +1,20 @@
+// vite.config.js
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   plugins: [vue()],
 
+  build: {
+    outDir: 'dist',
+  },
+
+  // ⚠️ CRITICAL: Fix routes on Render
   server: {
-    host: true,
-    port: 5173
+    historyApiFallback: true,
   },
 
   preview: {
-    host: true,
-    port: parseInt(process.env.PORT) || 4173,
-    allowedHosts: ['udubs-front.onrender.com']
+    historyApiFallback: true,
   }
 })

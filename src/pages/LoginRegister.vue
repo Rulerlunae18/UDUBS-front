@@ -221,7 +221,7 @@ const login = async () => {
       socket?.emit("realuser:online", user.id);
     }
 
-    router.push("/home");
+    router.push("/access");
   } catch {
     error.value = "НЕВЕРНЫЙ КОД ДОСТУПА";
     setTimeout(() => (error.value = ""), 3000);

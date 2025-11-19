@@ -204,26 +204,34 @@ const animateMetrics = () => {
 }
 onMounted(() => setInterval(animateMetrics, 3000))
 
-/* === Сеть === */
 const measureNetworkSpeed = async () => {
-  const url = `/static/ping.bin?cacheBust=${Date.now()}`
-  const start = performance.now()
-  const response = await fetch(url)
-  const blob = await response.blob()
-  const end = performance.now()
+  try {
+    const base = import.meta.env.VITE_API_URL.replace('/api', '');
+    const url = `${base}/ping`;
 
-  const sizeBytes = blob.size
-  const seconds = (end - start) / 1000
-  const bitsPerSecond = (sizeBytes * 8) / seconds
-  const kbps = bitsPerSecond / 1024
+    const start = performance.now();
+    const response = await fetch(url, { cache: 'no-store' });
+    const blob = await response.blob();
+    const end = performance.now();
 
-  netDown.value = kbps.toFixed(1) + ' kb/s'
-  netUp.value = (kbps * 0.12).toFixed(1) + ' kb/s'
-}
+    const sizeBytes = blob.size;
+    const seconds = (end - start) / 1000;
+    const bitsPerSecond = (sizeBytes * 8) / seconds;
+    const kbps = bitsPerSecond / 1024;
+
+    netDown.value = kbps.toFixed(1) + ' kb/s';
+    netUp.value = (kbps * 0.12).toFixed(1) + ' kb/s';
+  } catch (err) {
+    netDown.value = 'n/a';
+    netUp.value = 'n/a';
+  }
+};
+
 onMounted(() => {
-  setInterval(measureNetworkSpeed, 5000)
-  measureNetworkSpeed()
-})
+  setInterval(measureNetworkSpeed, 5000);
+  measureNetworkSpeed();
+});
+
 
 /* === PIXEL BACKGROUND === */
 const pixelCanvas = ref(null)

@@ -212,23 +212,30 @@ const login = async () => {
 
     const user = res.data.user;
 
-    // сохраняем в глобальное состояние
+    if (!user) {
+      throw new Error("NO_USER");
+    }
+
+    // 1) сохраняем в localStorage — для router.beforeEach
+    localStorage.setItem('user', JSON.stringify(user));
+
+    // 2) в глобальное состояние (для хедера и всего остального)
     auth.login(user, null);
 
-    // 🟢 ЕСЛИ ЭТО RealUser — посылаем online-сигнал
+    // 3) если это RealUser — отмечаем online
     if (user.realUser) {
       console.log("[SOCKET] RealUser online →", user.id);
       socket?.emit("realuser:online", user.id);
     }
 
-    router.push("/access");
-  } catch {
+    // 4) СРАЗУ на главную, а не обратно на /access
+    router.push("/home");
+  } catch (e) {
+    console.error(e);
     error.value = "НЕВЕРНЫЙ КОД ДОСТУПА";
     setTimeout(() => (error.value = ""), 3000);
   }
 };
-
-
 
 const submitFake = async () => {
   const formData = new FormData()

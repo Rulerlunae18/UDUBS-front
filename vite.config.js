@@ -3,9 +3,15 @@ import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   plugins: [vue()],
-  preview: {
-    allowedHosts: ['udubs-front.onrender.com'],
+
+  server: {
     host: true,
-    port: 4173
+    port: 5173
+  },
+
+  preview: {
+    host: true,
+    port: parseInt(process.env.PORT) || 4173,
+    allowedHosts: ['udubs-front.onrender.com']
   }
 })

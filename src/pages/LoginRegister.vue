@@ -90,11 +90,6 @@
         </p>
       </form>
     </Transition>
-
-    <!-- Футер -->
-    <footer class="absolute bottom-4 text-xs opacity-70 text-center z-10">
-      © 1997 OBDUBS-09 Research — Объединённая база данных уникальных биологических существ · Подструктура D-13
-    </footer>
   </div>
 </template>
 
